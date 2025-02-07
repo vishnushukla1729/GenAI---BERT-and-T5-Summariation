@@ -1,51 +1,126 @@
-✨ Summarization using Bert and SimpleT5 with Greedy Decoding ✨
-Added a Pipeline Summarizer for easy understanding how it works
-🖋 Author
-
-Vishnu Sujeetkumar Shukla🎓 Graduate Student Researcher, Computational Imaging and Sensing Lab🏫 University of California, Riverside
+Real-Time Summarization using Transformers
 
 📌 Overview
 
-This project demonstrates a simple text summarization pipeline using a transformer-based approach. The model follows a T5-like structure and employs greedy decoding to generate concise summaries from input paragraphs.
+This repository contains implementations for real-time text summarization using transformer-based models such as BERT, T5, and GPT. It includes foundational concepts like attention mechanisms and transformer architectures, along with applied implementations for dialogue summarization and API-based text summarization.
 
-🚀 Features
+📂 Project Structure
 
-✅ Implements a basic encoder-decoder transformer model (SimpleT5).✅ Uses a toy tokenizer for word-level tokenization.✅ Employs greedy decoding for text generation.✅ Compatible with both CPU and GPU environments.
+├── BERTandT5.ipynb                     # Introduction to Transformers (PPT + implementation)
+├── Dialougue_Summarization_GPT_model.ipynb # GPT-based dialogue summarization with API integration
+├── Home.ipynb                           # BERT from scratch + T5 pretrained summarization
+├── Source.ipynb                         # Attention mechanism and transformer fundamentals
+├── README.md                            # Project documentation
 
-🔧 Installation
+📜 Detailed File Description
 
-Ensure you have Python 3.7+ installed along with PyTorch. Install the necessary dependencies using:
+1️⃣ BERTandT5.ipynb – Introduction to Transformers & Summarization
 
-pip install torch
+Contains a PPT (presentation) introducing Transformer architectures.
 
-▶️ Usage
+Covers Self-Attention, Multi-Head Attention, and Feed-Forward Networks.
 
-Run the script to process an input paragraph and generate a summary:
+Explains BERT and T5 models and their applications in text summarization.
 
-python summarizer.py
+Includes a practical summarization script using T5 pretrained weights.
 
-📜 Example Output
+🔹 Key Features
 
-📝 Input Paragraph:
+✔ Understanding Transformer models✔ Using T5 for text summarization✔ Comparison of BERT and T5 architectures
 
-"Artificial Intelligence has revolutionized many industries. Deep learning techniques are now widely adopted in tasks such as speech recognition, computer vision, and natural language processing. The rapid development of AI technologies has led to significant breakthroughs and continues to drive innovative solutions."
+2️⃣ Dialougue_Summarization_GPT_model.ipynb – GPT-Based Dialogue Summarization
 
-✨ Generated Summary:
+Implements dialogue summarization using GPT-based models.
 
-"AI drives innovation with deep learning in speech and vision."
+Calls OpenAI’s GPT API to generate and summarize dialogues dynamically.
 
-📁 File Structure
+Works on structured and unstructured conversation formats.
 
-.
-├── summarizer.py       # Main script implementing summarization
-├── README.md           # Documentation
+🔹 Key Features
 
-🔮 Future Work
+✔ Uses GPT API for text generation and summarization✔ Handles conversational data efficiently✔ Supports integration into chatbots and customer service applications
 
-🔹 Train the model on real-world datasets.🔹 Enhance decoding strategies using beam search.🔹 Implement a more sophisticated tokenizer.
+Usage Example:
 
-📜 License
+import openai
 
-📝 MIT License
+response = openai.ChatCompletion.create(
+  model="gpt-4",
+  messages=[{"role": "user", "content": "Summarize the following conversation..."}]
+)
+print(response["choices"][0]["message"]["content"])
 
+3️⃣ Home.ipynb – BERT Implementation from Scratch + T5 Summarization
 
+Implements BERT from scratch, demonstrating tokenization, embedding, and attention.
+
+Uses pretrained T5 model for document-level text summarization.
+
+Compares extractive vs. abstractive summarization.
+
+🔹 Key Features
+
+✔ Custom BERT implementation (tokenizer, embeddings, self-attention)✔ Summarization with T5 (pretrained weights)✔ Performance evaluation using ROUGE scores
+
+4️⃣ Source.ipynb – Attention Mechanism & Transformer Fundamentals
+
+Breaks down the attention mechanism into step-by-step implementations.
+
+Covers Scaled Dot-Product Attention, Positional Encoding, and Transformer Architecture.
+
+Implements key transformer components using PyTorch.
+
+🔹 Key Features
+
+✔ Hands-on implementation of Self-Attention✔ Mathematical breakdown of Positional Encoding✔ Step-by-step Transformer Model Building
+
+Example: Self-Attention Mechanism
+
+import torch
+import torch.nn.functional as F
+
+def self_attention(Q, K, V):
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(K.size(-1)))
+    attention_weights = F.softmax(scores, dim=-1)
+    return torch.matmul(attention_weights, V)
+
+# Example usage
+Q = K = V = torch.rand(3, 4)
+output = self_attention(Q, K, V)
+print(output)
+
+🚀 How to Run the Project
+
+1️⃣ Install Dependencies
+
+pip install transformers openai torch fastapi uvicorn
+
+2️⃣ Running the Transformer Models in Jupyter
+
+Open any notebook (.ipynb) in JupyterLab or Google Colab and execute the cells.
+
+3️⃣ Running the GPT API for Summarization
+
+Get an OpenAI API Key and update it in Dialougue_Summarization_GPT_model.ipynb.
+
+Run the notebook to process conversations.
+
+4️⃣ Running a Simple FastAPI Server for Summarization
+
+uvicorn app:main --reload
+
+Then send a request:
+
+curl -X POST "http://127.0.0.1:8000/summarize/" -H "Content-Type: application/json" -d '{"text": "Your long text here"}'
+
+📊 Performance Metrics
+
+Uses ROUGE Score to evaluate summarization quality.
+
+Benchmarks GPT vs. T5 for summarization accuracy.
+
+Compares extractive vs. abstractive summarization.
+
+📌 Future Improvements
+
+✅ Implement real-time Kafka streaming for large-scale summarization.✅ Optimize transformer models with ONNX for better inference speed.✅ Integrate dialogue summarization into chatbots for customer service.
